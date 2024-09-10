@@ -23,13 +23,23 @@ class WidgetProvider : AppWidgetProvider() {
             val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
             views.setOnClickPendingIntent(R.id.widget_layout, pendingIntent)
 
-            // 현 날짜, 주 계산
+            // 현 날짜, 월 계산
             val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("MMMM", Locale.KOREA)
-            val currentMonth = dateFormat.format(calendar.time)
-            val weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH) + 1
+            val monthText = "${month}월"
 
-            val dateText = "$currentMonth $weekOfMonth Week"
+            // 현 날짜, 주 계산
+            val weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH)
+            val weekText = when (weekOfMonth) {
+                1 -> "첫째 주"
+                2 -> "둘째 주"
+                3 -> "셋째 주"
+                4 -> "넷째 주"
+                5 -> "다섯째 주"
+                else -> "${weekOfMonth}주"
+            }
+
+            val dateText = "$monthText $weekText"
             views.setTextViewText(R.id.widget_text, dateText)
 
             appWidgetManager.updateAppWidget(id, views)
